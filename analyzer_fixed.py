@@ -3,6 +3,7 @@ import re
 import pandas as pd
 import emoji
 import nltk
+nltk.data.path = ["C:/Users/achin/Documents/DSA/NLP"]
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -38,13 +39,24 @@ def get_emoji_sentiment_score(text):
             count += 1
     return score / count if count > 0 else 0
 
-
+# nltk_data_dir = os.path.join("C:", "Users", "achin","Documents","DSA","NLP", "nltk_data")
+nltk_data_dir = "./nltk_data"
+os.makedirs(nltk_data_dir, exist_ok=True)  # Create directory if missing
+nltk.data.path = [nltk_data_dir]  # Tell NLTK to use this directory
 # Download necessary NLTK resources (uncomment first time)
-nltk.download('vader_lexicon')
-nltk.download('stopwords')
-nltk.download('punkt')
+nltk.download('punkt', download_dir=nltk_data_dir, force=True)
+nltk.download('punkt_tab', download_dir=nltk_data_dir, force=True)
+nltk.download('vader_lexicon', download_dir=nltk_data_dir, force=True)
+nltk.download('stopwords', download_dir=nltk_data_dir, force=True)
 print("Punkt is installed correctly!")
 
+try:
+    nltk.data.find('tokenizers/punkt')
+    print("SUCCESS: Punkt tokenizer installed!")
+except LookupError:
+    print("ERROR: Punkt still missing. Check permissions or path.")
+
+    
 # Set CustomTkinter appearance
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
